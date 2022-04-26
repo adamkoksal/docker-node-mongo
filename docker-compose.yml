@@ -1,0 +1,25 @@
+services:
+  web:
+    build: ./client
+
+  api:
+    container_name: docker-node-mongo
+    restart: always
+    build: ./server
+    ports:
+      - '3001:3001'
+    depends_on:
+      - web
+    links: 
+      - mongo
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - '27017:27017'
+
+  mongo-seed:
+    build: ./mongo-seed
+    depends_on:
+      - mongo
